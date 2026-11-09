@@ -23,8 +23,18 @@ if ($appBaseUrl === null) {
         ? realpath($_SERVER['DOCUMENT_ROOT'])
         : false;
     $appRealPath = realpath(APP_ROOT);
+    $scriptFilename = isset($_SERVER['SCRIPT_FILENAME']) && is_string($_SERVER['SCRIPT_FILENAME'])
+        ? realpath($_SERVER['SCRIPT_FILENAME'])
+        : false;
+
     if ($documentRoot && $appRealPath && str_starts_with($appRealPath, $documentRoot)) {
         $appBaseUrl = str_replace('\\', '/', substr($appRealPath, strlen($documentRoot)));
+        $appBaseUrl = '/' . trim($appBaseUrl, '/');
+        $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
+    } elseif ($scriptFilename && $documentRoot && str_starts_with($scriptFilename, $documentRoot)) {
+        // Fallback: derive from the executing script's directory
+        $scriptDir = dirname($scriptFilename);
+        $appBaseUrl = str_replace('\\', '/', substr($scriptDir, strlen($documentRoot)));
         $appBaseUrl = '/' . trim($appBaseUrl, '/');
         $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
     } else {
