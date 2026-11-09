@@ -13,18 +13,23 @@ define('APP_VERSION', '1.0.0');
 define('APP_ROOT', dirname(__DIR__));
 
 /**
- * Base URL of the application root, derived from the document root so that
- * every page (including the portal folders) resolves shared assets correctly.
+ * Base URL of the application root. Can be overridden with NIJOSTAM_BASE_URL
+ * environment variable (e.g., "/asup_nilest_journals/" for subdirectory deployments).
+ * Falls back to auto-detection from document root.
  */
-$appBaseUrl = '/';
-$documentRoot = isset($_SERVER['DOCUMENT_ROOT']) && is_string($_SERVER['DOCUMENT_ROOT'])
-    ? realpath($_SERVER['DOCUMENT_ROOT'])
-    : false;
-$appRealPath = realpath(APP_ROOT);
-if ($documentRoot && $appRealPath && str_starts_with($appRealPath, $documentRoot)) {
-    $appBaseUrl = str_replace('\\', '/', substr($appRealPath, strlen($documentRoot)));
-    $appBaseUrl = '/' . trim($appBaseUrl, '/');
-    $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
+$appBaseUrl = getenv('NIJOSTAM_BASE_URL') ?: null;
+if ($appBaseUrl === null) {
+    $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) && is_string($_SERVER['DOCUMENT_ROOT'])
+        ? realpath($_SERVER['DOCUMENT_ROOT'])
+        : false;
+    $appRealPath = realpath(APP_ROOT);
+    if ($documentRoot && $appRealPath && str_starts_with($appRealPath, $documentRoot)) {
+        $appBaseUrl = str_replace('\\', '/', substr($appRealPath, strlen($documentRoot)));
+        $appBaseUrl = '/' . trim($appBaseUrl, '/');
+        $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
+    } else {
+        $appBaseUrl = '';
+    }
 }
 define('APP_BASE_URL', $appBaseUrl);
 
