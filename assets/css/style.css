@@ -96,7 +96,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 400; }
 
 .site-header { position: sticky; top: 0; z-index: 40; background: rgba(246, 246, 240, .94); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(18, 59, 46, .12); transition: background .25s var(--ease), box-shadow .25s var(--ease); }
 .site-header.is-scrolled { background: rgba(255, 255, 255, .97); box-shadow: 0 12px 30px -24px rgba(11, 42, 32, .6); }
-.header-inner { min-height: 112px; display: flex; align-items: center; gap: 20px; }
+.header-inner { position: relative; min-height: 112px; display: flex; align-items: center; gap: 20px; }
 .brand { display: inline-flex; align-items: center; gap: 16px; flex: 0 0 auto; color: var(--forest); text-decoration: none; }
 .brand-mark { width: 76px; height: 76px; flex: 0 0 76px; border-radius: 50%; object-fit: contain; transition: transform .3s var(--ease); }
 .brand:hover .brand-mark { transform: scale(1.04); }
@@ -115,7 +115,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 400; }
 .primary-nav .nav-submit:hover { background: var(--forest-deep); transform: translateY(-1px); }
 .nav-submit span { color: var(--lime); }
 .nav-submit ion-icon, .text-link ion-icon { font-size: 15px; }
-.menu-toggle { display: none; align-items: center; gap: 9px; padding: 10px 0 10px 14px; border: 0; background: none; color: var(--forest); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.menu-toggle { display: none; align-items: center; gap: 9px; padding: 10px 0 10px 14px; border: 0; background: none; color: var(--forest); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; touch-action: manipulation; }
 .menu-toggle ion-icon { font-size: 22px; }
 
 ion-icon { display: inline-block; width: 1em; height: 1em; flex: 0 0 auto; vertical-align: -.125em; }
@@ -422,9 +422,9 @@ ion-icon { display: inline-block; width: 1em; height: 1em; flex: 0 0 auto; verti
     .brand-mark { width: 64px; height: 64px; flex-basis: 64px; }
     .brand-copy strong { font-size: 15px; }
     .brand-copy small { font-size: 10px; }
-    .menu-toggle { display: inline-flex; margin-left: auto; }
-    .primary-nav { position: absolute; top: 100%; right: 0; left: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 28px 20px; border-bottom: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow-card); }
-    .primary-nav.is-open { display: flex; }
+    .menu-toggle { position: relative; z-index: 20; display: inline-flex; margin-left: auto; }
+    .primary-nav { position: absolute; top: 100%; right: 0; left: 0; z-index: 15; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 28px 20px; border-bottom: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow-card); }
+    .primary-nav.is-open { display: flex; z-index: 25; }
     .primary-nav a { padding: 13px 4px; border-bottom: 1px solid var(--line); }
     .primary-nav a::after { display: none; }
     .primary-nav .nav-submit { margin-top: 12px; padding: 14px; border: 0; text-align: center; }

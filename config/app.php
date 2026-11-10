@@ -15,7 +15,7 @@ define('APP_ROOT', dirname(__DIR__));
 /**
  * Base URL of the application root. Can be overridden with NIJOSTAM_BASE_URL
  * environment variable (e.g., "/asup_nilest_journals/" for subdirectory deployments).
- * Falls back to auto-detection from document root.
+ * Falls back to auto-detection from document root and request info.
  */
 $appBaseUrl = getenv('NIJOSTAM_BASE_URL') ?: null;
 if ($appBaseUrl === null) {
@@ -36,6 +36,12 @@ if ($appBaseUrl === null) {
         $scriptDir = dirname($scriptFilename);
         $appBaseUrl = str_replace('\\', '/', substr($scriptDir, strlen($documentRoot)));
         $appBaseUrl = '/' . trim($appBaseUrl, '/');
+        $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
+    } elseif (isset($_SERVER['SCRIPT_NAME']) && is_string($_SERVER['SCRIPT_NAME'])) {
+        // Fallback: derive from SCRIPT_NAME (e.g., /asup_nilest_journals/index.php)
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $scriptDir = dirname($scriptName);
+        $appBaseUrl = '/' . trim($scriptDir, '/');
         $appBaseUrl = $appBaseUrl === '/' ? '' : $appBaseUrl;
     } else {
         $appBaseUrl = '';

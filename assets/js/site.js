@@ -8,12 +8,34 @@ const setMenu = (open) => {
     menuIcon?.setAttribute('name', open ? 'close-outline' : 'menu-outline');
 };
 
-menuToggle?.addEventListener('click', () => {
-    setMenu(menuToggle.getAttribute('aria-expanded') !== 'true');
+const toggleMenu = (event) => {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    setMenu(menuToggle?.getAttribute('aria-expanded') !== 'true');
+};
+
+menuToggle?.addEventListener('click', toggleMenu);
+menuToggle?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        toggleMenu(event);
+    }
 });
 
 primaryNav?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setMenu(false));
+});
+
+document.addEventListener('click', (event) => {
+    if (!menuToggle || !primaryNav) return;
+
+    const target = event.target;
+    const clickInsideMenu = primaryNav.contains(target) || menuToggle.contains(target);
+    if (!clickInsideMenu && primaryNav.classList.contains('is-open')) {
+        setMenu(false);
+    }
 });
 
 document.addEventListener('keydown', (event) => {
